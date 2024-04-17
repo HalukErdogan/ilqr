@@ -16,13 +16,13 @@ STICK_LENGTH = 1
 df = pd.read_csv("output.csv")
 
 # Extract the time and state data
-t = df["t"]     # time
-x = df["q1"]    # cart position
-q = df["q2"]    # pendulum angle
-v = df["dq1"]   # cart velocity
-w = df["dq2"]   # pendulum angular velocity
-u = df["u"]     # control input
-dt = t[1]-t[0]  # time step
+t = df["t"].values      # time
+x = df["q1"].values     # cart position
+q = df["q2"].values     # pendulum angle
+v = df["dq1"].values    # cart velocity
+w = df["dq2"].values    # pendulum angular velocity
+u = df["u"].values      # control input
+dt = t[1]-t[0]          # time step
 
 # Create a new figure and set the aspect ratio
 fig, ax = plt.subplots()
