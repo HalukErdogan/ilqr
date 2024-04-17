@@ -56,7 +56,7 @@ Follow these steps to install ILQR:
 
 ## Example
 
-An example that demonstrates how to solve a trajectory optimization problem for a pendulum on a cart is given in the "example" folder. This problem is solved about 0.015 secs. Follow the steps provided below to execute the example:
+An example that demonstrates how to solve a trajectory optimization problem for a pendulum on a cart is given in the "example" folder. This problem is solved about 0.004 secs. Follow the steps provided below to execute the example:
 
 1. Run the executable:
 
