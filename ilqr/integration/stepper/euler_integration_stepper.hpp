@@ -10,8 +10,13 @@ namespace stepper {
 template <std::size_t N, std::size_t M>
 class EulerIntegrationStepper : public IntegrationStepper<N, M> {
    public:
-    void Step(const SystemPtr& system, const State& state, const Control& control,
-              const Time& time, const Time& delta_time,
+    using SystemPtr = typename IntegrationStepper<N, M>::SystemPtr;
+    using State = typename IntegrationStepper<N, M>::State;
+    using Control = typename IntegrationStepper<N, M>::Control;
+    using Time = typename IntegrationStepper<N, M>::Time;
+
+    void Step(const SystemPtr& system, const State& state,
+              const Control& control, const Time& time, const Time& delta_time,
               State& result) const override {
         // Static variables to avoid memory allocation.
         static State k1;

@@ -71,14 +71,15 @@ class CostFunctionWithFiniteDiff : public CostFunction<N, M> {
         static State state_plus;
 
         // Calculate the nominal state gradient.
-        CalculateRunningCostStateGradient(state, control, index, gradient_nominal);
+        CalculateRunningCostStateGradient(state, control, index,
+                                          gradient_nominal);
 
         // Calculate the state hessian using finite difference.
         state_plus = state;
         for (std::size_t i = 0; i < N; ++i) {
             state_plus(i) += epsilon_;
             CalculateRunningCostStateGradient(state_plus, control, index,
-                                          gradient_plus);
+                                              gradient_plus);
             hessian.col(i) = (gradient_plus - gradient_nominal) / epsilon_;
             state_plus(i) = state(i);
         }
@@ -94,14 +95,14 @@ class CostFunctionWithFiniteDiff : public CostFunction<N, M> {
 
         // Calculate the nominal control gradient.
         CalculateRunningCostControlGradient(state, control, index,
-                                        gradient_nominal);
+                                            gradient_nominal);
 
         // Calculate the control hessian using finite difference.
         control_plus = control;
         for (std::size_t i = 0; i < M; ++i) {
             control_plus(i) += epsilon_;
             CalculateRunningCostControlGradient(state, control_plus, index,
-                                            gradient_plus);
+                                                gradient_plus);
             hessian.col(i) = (gradient_plus - gradient_nominal) / epsilon_;
             control_plus(i) = control(i);
         }
@@ -116,14 +117,15 @@ class CostFunctionWithFiniteDiff : public CostFunction<N, M> {
         static State state_plus;
 
         // Calculate the nominal state gradient.
-        CalculateRunningCostControlGradient(state, control, index, gradient_nominal);
+        CalculateRunningCostControlGradient(state, control, index,
+                                            gradient_nominal);
 
         // Calculate the control hessian using finite difference.
         state_plus = state;
         for (std::size_t i = 0; i < N; ++i) {
             state_plus(i) += epsilon_;
             CalculateRunningCostControlGradient(state_plus, control, index,
-                                            gradient_plus);
+                                                gradient_plus);
             hessian.col(i) = (gradient_plus - gradient_nominal) / epsilon_;
             state_plus(i) = state(i);
         }
@@ -165,7 +167,8 @@ class CostFunctionWithFiniteDiff : public CostFunction<N, M> {
         state_plus = state;
         for (std::size_t i = 0; i < N; ++i) {
             state_plus(i) += epsilon_;
-            CalculateTerminalCostStateGradient(state_plus, index, gradient_plus);
+            CalculateTerminalCostStateGradient(state_plus, index,
+                                               gradient_plus);
             hessian.col(i) = (gradient_plus - gradient_nominal) / epsilon_;
             state_plus(i) = state(i);
         }

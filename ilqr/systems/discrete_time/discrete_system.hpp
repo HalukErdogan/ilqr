@@ -19,7 +19,8 @@ class DiscreteSystem {
     constexpr std::size_t GetNumControl() const { return M; }
 
     virtual void PropogateDynamics(const State& state, const Control& control,
-                                   const Index& index, State& next_state) const = 0;
+                                   const Index& index,
+                                   State& next_state) const = 0;
 
     virtual void CalculateStateJacobian(
         const State& state, const Control& control, const Index& index,

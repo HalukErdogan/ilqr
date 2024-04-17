@@ -20,13 +20,13 @@ using ilqr::systems::discrete_time::DiscreteSystemWithFiniteDiff;
 template <std::size_t N, std::size_t M>
 class Discretizer : public DiscreteSystemWithFiniteDiff<N, M> {
    public:
-    using SystemPtr               = std::shared_ptr<ContinuousSystem<N, M>>;
-    using IntegrationIteratorPtr  = std::shared_ptr<IntegrationIterator<N, M>>;
-    using IntegrationStepperPtr   = std::shared_ptr<IntegrationStepper<N, M>>;
-    using State                   = typename DiscreteSystemWithFiniteDiff<N, M>::State;
-    using Control                 = typename DiscreteSystemWithFiniteDiff<N, M>::Control;
-    using Index                   = typename DiscreteSystemWithFiniteDiff<N, M>::Index;
-    using Time                    = double;
+    using SystemPtr = std::shared_ptr<ContinuousSystem<N, M>>;
+    using IntegrationIteratorPtr = std::shared_ptr<IntegrationIterator<N, M>>;
+    using IntegrationStepperPtr = std::shared_ptr<IntegrationStepper<N, M>>;
+    using State = typename DiscreteSystemWithFiniteDiff<N, M>::State;
+    using Control = typename DiscreteSystemWithFiniteDiff<N, M>::Control;
+    using Index = typename DiscreteSystemWithFiniteDiff<N, M>::Index;
+    using Time = double;
 
     Discretizer(const SystemPtr& continuous_system,
                 const IntegrationIteratorPtr& iterator,

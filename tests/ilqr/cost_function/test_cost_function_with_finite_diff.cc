@@ -7,20 +7,20 @@ using ilqr::cost_functions::CostFunctionWithFiniteDiff;
 class QuadraticCost : public CostFunctionWithFiniteDiff<2, 1> {
    public:
     QuadraticCost() {
-        running_state_weight_   << 1.0, 0.0, 0.0, 1.0;
+        running_state_weight_ << 1.0, 0.0, 0.0, 1.0;
         running_control_weight_ << 1.0;
-        terminal_state_weight_  << 1.0, 0.0, 0.0, 1.0;
+        terminal_state_weight_ << 1.0, 0.0, 0.0, 1.0;
     }
 
     double CalculateRunningCost(const State& state, const Control& control,
-                              const Index& index) const override {
+                                const Index& index) const override {
         return (0.5 * state.transpose() * running_state_weight_ * state +
                 0.5 * control.transpose() * running_control_weight_ * control)
             .value();
     }
 
     double CalculateTerminalCost(const State& state,
-                               const Index& index) const override {
+                                 const Index& index) const override {
         return (0.5 * state.transpose() * terminal_state_weight_ * state)
             .value();
     }
@@ -103,7 +103,8 @@ TEST(CostFunctionWithFiniteDiff, CalculateRunningCostControlStateHessian) {
     control << 1.0;
     QuadraticCost::Index index = 0;
     Eigen::Matrix<double, 1, 2> hessian;
-    cost.CalculateRunningCostControlStateHessian(state, control, index, hessian);
+    cost.CalculateRunningCostControlStateHessian(state, control, index,
+                                                 hessian);
 
     Eigen::Matrix<double, 1, 2> hessian_expected;
     hessian_expected << 0.0, 0.0;

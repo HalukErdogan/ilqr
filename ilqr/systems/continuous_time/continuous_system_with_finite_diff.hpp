@@ -10,9 +10,9 @@ namespace continuous_time {
 template <std::size_t N, std::size_t M>
 class ContinousSystemWithFiniteDiff : public ContinousSystem<N, M> {
    public:
-    using State     = typename ContinousSystem<N, M>::State;
-    using Control   = typename ContinousSystem<N, M>::Control;
-    using Time      = typename ContinousSystem<N, M>::Time;
+    using State = typename ContinousSystem<N, M>::State;
+    using Control = typename ContinousSystem<N, M>::Control;
+    using Time = typename ContinousSystem<N, M>::Time;
 
     virtual void CalculateDynamics(const State& state, const Control& control,
                                    const Time& time,

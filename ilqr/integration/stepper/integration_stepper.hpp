@@ -15,9 +15,9 @@ template <std::size_t N, std::size_t M>
 class IntegrationStepper {
    public:
     using SystemPtr = std::shared_ptr<ContinuousSystem<N, M>>;
-    using State     = Eigen::Matrix<double, N, 1>;
-    using Control   = Eigen::Matrix<double, M, 1>;
-    using Time      = double;
+    using State = Eigen::Matrix<double, N, 1>;
+    using Control = Eigen::Matrix<double, M, 1>;
+    using Time = double;
 
     constexpr std::size_t GetNumState() const { return N; }
 

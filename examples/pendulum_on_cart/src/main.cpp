@@ -128,8 +128,8 @@ int main(int argc, char** argv) {
         // Write the current state to the file
         const auto& x = solution.states.at(i);
         const auto& u = solution.controls.at(i);
-        file << t0+i*dt << "," << x(0) << "," << x(1) << "," << x(2) << "," << x(3) << "," << u(0)
-             << std::endl;
+        file << t0 + i * dt << "," << x(0) << "," << x(1) << "," << x(2) << ","
+             << x(3) << "," << u(0) << std::endl;
     }
     file.close();
 

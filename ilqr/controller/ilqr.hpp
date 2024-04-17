@@ -50,7 +50,7 @@ class ILQR {
             for (std::size_t j = 0; j < H - 1; ++j) {
                 solution.controls[j] = Eigen::Matrix<double, M, 1>::Zero();
             }
-        } 
+        }
 
         // Rollout the system
         double cost = 0.0;
@@ -94,11 +94,16 @@ class ILQR {
                 problem.system->CalculateControlJacobian(x, u, j, Fu);
 
                 // Compute the cost function derivatives
-                problem.cost_function->CalculateRunningCostStateGradient(x, u, j, Lx);
-                problem.cost_function->CalculateRunningCostControlGradient(x, u, j, Lu);
-                problem.cost_function->CalculateRunningCostStateHessian(x, u, j, Lxx);
-                problem.cost_function->CalculateRunningCostControlStateHessian(x, u, j, Lux);
-                problem.cost_function->CalculateRunningCostControlHessian(x, u, j, Luu);
+                problem.cost_function->CalculateRunningCostStateGradient(x, u,
+                                                                         j, Lx);
+                problem.cost_function->CalculateRunningCostControlGradient(
+                    x, u, j, Lu);
+                problem.cost_function->CalculateRunningCostStateHessian(x, u, j,
+                                                                        Lxx);
+                problem.cost_function->CalculateRunningCostControlStateHessian(
+                    x, u, j, Lux);
+                problem.cost_function->CalculateRunningCostControlHessian(
+                    x, u, j, Luu);
 
                 // Compute the Q function derivatives
                 Qx = Lx + Fx.transpose() * Vx;
@@ -109,14 +114,16 @@ class ILQR {
                 Quu_inv = (Quu + options.regularization *
                                      Eigen::Matrix<double, M, M>::Identity())
                               .inverse();
-                
-                // Compute the feedforward and feedback gains 
+
+                // Compute the feedforward and feedback gains
                 k = -Quu_inv * Qu;
                 K = -Quu_inv * Qux;
 
                 // Compute the value function derivatives
-                Vx = Qx + K.transpose() * Qu + Qux.transpose() * k + K.transpose() * Quu * k;
-                Vxx = Qxx + K.transpose() * Qux + Qux.transpose() * K + K.transpose() * Quu * K;
+                Vx = Qx + K.transpose() * Qu + Qux.transpose() * k +
+                     K.transpose() * Quu * k;
+                Vxx = Qxx + K.transpose() * Qux + Qux.transpose() * K +
+                      K.transpose() * Quu * K;
             }
 
             // Forward pass
@@ -164,12 +171,14 @@ class ILQR {
             std::swap(solution.controls, U_hat);
 
             // Log the cost
-            std::printf("Iteration: %5zu, Alpha: %.5f, Cost: %.5f\n", i, alpha, cost);
+            std::printf("Iteration: %5zu, Alpha: %.5f, Cost: %.5f\n", i, alpha,
+                        cost);
 
             // Check for convergence
             if (std::abs(prev_cost - cost) < options.tolerance) {
                 // Log the final cost
-                std::cout << "Algorithm converged! Final cost: " << cost << std::endl;
+                std::cout << "Algorithm converged! Final cost: " << cost
+                          << std::endl;
                 return;
             }
 
@@ -178,7 +187,8 @@ class ILQR {
         }
 
         // Log the final cost
-        std::cout << "Algorithm reached iteration limit! Final cost: " << cost << std::endl;
+        std::cout << "Algorithm reached iteration limit! Final cost: " << cost
+                  << std::endl;
     }
 
    private:
