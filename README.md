@@ -26,7 +26,7 @@ Follow these steps to install ILQR:
 
 1. Clone the repository:
     ```bash
-    git clone https://your-repository-url-here
+    git clone https://github.com/HalukErdogan/ilqr.git
     ```
 
 2. Navigate to the repository directory:
