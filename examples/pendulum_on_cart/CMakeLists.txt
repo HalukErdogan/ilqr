@@ -1,0 +1,3 @@
+add_executable(pendulum_on_cart src/main.cpp)
+target_include_directories(pendulum_on_cart PUBLIC include)
+target_link_libraries(pendulum_on_cart PUBLIC ilqr)
