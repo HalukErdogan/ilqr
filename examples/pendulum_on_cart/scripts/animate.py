@@ -80,7 +80,7 @@ def frames():
 ani = FuncAnimation(fig, update, frames=frames, init_func=init, blit=True, interval=10)
 
 # Save the animation as a gif
-ani.save('pendulum_on_cart.gif', fps=1/dt, dpi=300)
+ani.save('pendulum_on_cart.gif', writer='pillow', fps=1/dt, dpi=300)
 
 # Display the animation
 plt.show()
