@@ -6,7 +6,7 @@ There are couple advantages to use this package:
 - Pure C++ implementation
 - Only depends on Eigen (Gtest is optional for testing)
 - Easy dependency control using vcpkg
-- Cross platform (Tested on Ubuntu 22.04, Ubuntu 20.04, Window 11)
+- Cross platform (Tested on Ubuntu 22.04, Ubuntu 20.04, Windows 11)
 - High perfomance since there is no dynamic memory allocations (Templated)
 - Provides discritization with different integration steppers
 - Provides numerical differantiation for continuous/discrete system and the cost function
