@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
     file << "t,q1,q2,dq1,dq2,u" << std::endl;
 
     // Store the results
-    for (int i = 0; i < solution.states.size()-1; ++i) {
+    for (std::size_t i = 0; i + 1 < solution.states.size(); ++i) {
         // Write the current state to the file
         const auto& x = solution.states.at(i);
         const auto& u = solution.controls.at(i);
