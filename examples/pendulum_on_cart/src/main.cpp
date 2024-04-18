@@ -10,6 +10,9 @@
 #include "ilqr/cost_functions/quadratic_cost_function.hpp"
 #include "ilqr/integration/iterator/constant_integration_iterator.hpp"
 #include "ilqr/integration/stepper/euler_integration_stepper.hpp"
+#include "ilqr/integration/stepper/rk2_integration_stepper.hpp"
+#include "ilqr/integration/stepper/rk3_integration_stepper.hpp"
+#include "ilqr/integration/stepper/rk4_integration_stepper.hpp"
 #include "ilqr/systems/discrete_time/discretizer.hpp"
 #include "pendulum_on_cart.hpp"
 
@@ -21,15 +24,19 @@ using ilqr::cost_functions::QuadraticCostFunction;
 using ilqr::examples::PendulumOnCart;
 using ilqr::integration::iterator::ConstantIntegrationIterator;
 using ilqr::integration::stepper::EulerIntegrationStepper;
+using ilqr::integration::stepper::RK2IntegrationStepper;
+using ilqr::integration::stepper::RK3IntegrationStepper;
+using ilqr::integration::stepper::RK4IntegrationStepper;
 using ilqr::systems::continuous_time::ContinuousSystem;
 using ilqr::systems::discrete_time::Discretizer;
 
 // Define the constants
+constexpr double t0 = 0.0;      // initial time
+constexpr double tf = 10.0;     // final time
+constexpr double dt = 0.1;      // time step
 constexpr std::size_t N = 4;    // number of states
 constexpr std::size_t M = 1;    // number of control inputs
-constexpr std::size_t H = 100;  // horizon
-constexpr double t0 = 0.0;      // initial time
-constexpr double dt = 0.1;      // time step
+constexpr std::size_t H = (tf - t0) / dt + 1;   // horizon
 
 // Define the variables
 Eigen::Vector<double, N> x0;                     // initial state
