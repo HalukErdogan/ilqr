@@ -1,16 +1,15 @@
 #! /usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -- coding: utf-8 --
 
 import math
-import time
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 # Constants
-BOX_WIDTH = 0.5
-BOX_HEIGHT = 0.3
-STICK_LENGTH = 1
+CART_WIDTH = 0.5
+CART_HEIGHT = 0.3
+PENDULUM_LENGTH = 1
 
 # Read the output.csv file into a pandas dataframe
 df = pd.read_csv("output.csv")
@@ -27,60 +26,60 @@ dt = t[1]-t[0]          # time step
 # Create a new figure and set the aspect ratio
 fig, ax = plt.subplots()
 
-# Plot the cart as a rectangle
-rect = plt.Rectangle((-BOX_WIDTH/2, -BOX_HEIGHT/2), BOX_WIDTH, BOX_HEIGHT, color='red')
-ax.add_patch(rect)
+# Plot the cart as a cart
+cart = plt.Rectangle((-CART_WIDTH/2, -CART_HEIGHT/2), CART_WIDTH, CART_HEIGHT, color='red')
+ax.add_patch(cart)
 
 # Plot the pendulum as a line
-line, = ax.plot([0, 0], [0, 0], '-o', lw=4, color='black')
+pendulum, = ax.plot([0, 0], [0, 0], '-o', lw=4, color='black')
+
+# Plot the track as a line
+track, = ax.plot([-100, 100], [0, 0], '--', lw=1, color='black')
 
 # Add a text object for the time
 time_text = ax.text(0.05, 0.95, '', transform=ax.transAxes, verticalalignment='top')
 
 def init():
+    # Reset the cart and pendulum positions
+    cart.set_x(x[0] - CART_WIDTH/2)
+    pendulum.set_xdata([x[0], x[0] + PENDULUM_LENGTH * math.sin(q[0])])
+    pendulum.set_ydata([0, - PENDULUM_LENGTH * math.cos(q[0])])
+
+    # Initialize the time text
+    time_text.set_text(f'Time: {t[0]:.2f} s')
+
     # Set the title and labels
     ax.set_title('Pendulum on Cart')
     ax.set_xlabel('x (m)')
     ax.set_ylabel('y (m)')
 
-    # Set the aspect ratio
+    # Set the aspect ratio and limits
     ax.set_aspect('equal', 'box')
     ax.set_xlim(-2, 2)
     ax.set_ylim(-2, 2)
-    
-    # Plot the track
-    ax.plot([-100, 100], [0, 0], '--', lw=1, color='black')
 
-    # Initialize the time text
-    time_text.set_text('')
+    # Draw the initial plot
+    fig.canvas.draw()
 
-    return rect, line, time_text
+    return cart, pendulum, time_text
 
 # Function to update the animation
 def update(i):
-    # Update the position of the rectangle and the line based on the ith index
-    rect.set_x(x[i] - BOX_WIDTH/2)
-    line.set_xdata([x[i], x[i] + STICK_LENGTH * math.sin(q[i])])
-    line.set_ydata([0, - STICK_LENGTH * math.cos(q[i])])
+    # Update the position of the cart and the pendulum based on the ith index
+    cart.set_x(x[i] - CART_WIDTH/2)
+    pendulum.set_xdata([x[i], x[i] + PENDULUM_LENGTH * math.sin(q[i])])
+    pendulum.set_ydata([0, - PENDULUM_LENGTH * math.cos(q[i])])
 
     # Update the time display
     time_text.set_text(f'Time: {t[i]:.2f} s')
-
-    # Sleep for the time step
-    time.sleep(dt)
     
-    return rect, line, time_text
-
-# Function to generate the frames
-def frames():
-    for i in range(len(t)):
-        yield i
+    return cart, pendulum, time_text
 
 # Create the animation
-ani = FuncAnimation(fig, update, frames=frames, init_func=init, blit=True, interval=10)
+ani = FuncAnimation(fig, update, frames=len(t), init_func=init, blit=True, interval=dt*1000)
 
 # Save the animation as a gif
-ani.save('pendulum_on_cart.gif', writer='pillow', fps=1/dt, dpi=300)
+ani.save('pendulum_on_cart.gif', writer='pillow', fps=1/dt, dpi=100)
 
 # Display the animation
 plt.show()
