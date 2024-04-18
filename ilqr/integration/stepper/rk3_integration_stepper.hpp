@@ -1,7 +1,7 @@
 #ifndef ILQR_INTEGRATION_STEPPER_RK3_INTEGRATION_STEPPER_HPP
 #define ILQR_INTEGRATION_STEPPER_RK3_INTEGRATION_STEPPER_HPP
 
-#include "ilqr/integration/stepper/stepper.hpp"
+#include "ilqr/integration/stepper/integration_stepper.hpp"
 
 namespace ilqr {
 namespace integration {
