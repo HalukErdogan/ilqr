@@ -88,7 +88,7 @@ An example that demonstrates how to solve a trajectory optimization problem for 
 
 ## Performance
 
-The performance of the module is tested using the pendulum on cart example provided above. The following table show the execution time of the algorithm in seconds. Tests has been done on 12th Gen Intel(R) Core(TM) i7-12800H processor and Ubuntu 22.04 WSL operation system.
+The performance of the module is tested using the pendulum on cart example provided above. The following table show the execution time of the algorithm in seconds. Tests has been done on 12th Gen Intel(R) Core(TM) i7-12800H processor and Ubuntu 22.04 WSL operation system. The example is built in Release configuration using g++ and make.
 
 
 |                          | Horizon = 101 | Horizon = 501 | Horizon = 1001|
