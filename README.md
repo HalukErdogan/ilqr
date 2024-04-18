@@ -7,7 +7,7 @@ There are couple advantages to use this package:
 - Only depends on Eigen (Gtest is optional for testing)
 - Easy dependency control using vcpkg
 - Cross platform (Tested on Ubuntu 22.04, Ubuntu 20.04, Window 11)
-- High perfomance since there is no dynamic memory allocations (templated)
+- High perfomance since there is no dynamic memory allocations (Templated)
 - Provides discritization with different integration steppers
 - Provides numerical differantiation for continuous/discrete system and the cost function
 
@@ -57,7 +57,7 @@ Follow these steps to install ILQR:
 
 ## Example
 
-An example that demonstrates how to solve a trajectory optimization problem for a pendulum on a cart is given in the "example" folder. This problem is solved about 0.004 secs. Follow the steps provided below to execute the example:
+An example that demonstrates how to solve a trajectory optimization problem for a pendulum on a cart is given in the "example" folder. Follow the steps provided below to execute the example:
 
 1. Run the executable:
 
@@ -85,6 +85,8 @@ An example that demonstrates how to solve a trajectory optimization problem for 
    Result:
 
    ![](examples/pendulum_on_cart/gif/pendulum_on_cart.gif)
+
+## Performance
 
 
 ## Roadmap
