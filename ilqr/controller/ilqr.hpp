@@ -42,7 +42,7 @@ class ILQR {
    public:
     void Optimize(const Problem<N, M>& problem, const Options& options,
                   Solution<N, M, H>& solution) {
-        // Simulate forward
+        // Set the initial state
         solution.states[0] = problem.init_state;
 
         // Reset the control inputs
