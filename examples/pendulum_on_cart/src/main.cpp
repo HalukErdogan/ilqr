@@ -8,12 +8,16 @@
 
 #include "ilqr/controller/ilqr.hpp"
 #include "ilqr/cost_functions/quadratic_cost_function.hpp"
+#include "ilqr/cost_functions/cost_function_with_constraints.hpp"
 #include "ilqr/integration/iterator/constant_integration_iterator.hpp"
 #include "ilqr/integration/stepper/euler_integration_stepper.hpp"
 #include "ilqr/integration/stepper/rk2_integration_stepper.hpp"
 #include "ilqr/integration/stepper/rk3_integration_stepper.hpp"
 #include "ilqr/integration/stepper/rk4_integration_stepper.hpp"
 #include "ilqr/systems/discrete_time/discretizer.hpp"
+#include "ilqr/constraints/inequality_constraint.hpp"
+#include "ilqr/constraints/state_bound.hpp"
+#include "ilqr/constraints/control_bound.hpp"
 #include "pendulum_on_cart.hpp"
 
 using ilqr::controller::ILQR;
@@ -21,6 +25,7 @@ using ilqr::controller::Options;
 using ilqr::controller::Problem;
 using ilqr::controller::Solution;
 using ilqr::cost_functions::QuadraticCostFunction;
+using ilqr::cost_functions::CostFunctionWithConstraints;
 using ilqr::examples::PendulumOnCart;
 using ilqr::integration::iterator::ConstantIntegrationIterator;
 using ilqr::integration::stepper::EulerIntegrationStepper;
@@ -29,6 +34,9 @@ using ilqr::integration::stepper::RK3IntegrationStepper;
 using ilqr::integration::stepper::RK4IntegrationStepper;
 using ilqr::systems::continuous_time::ContinuousSystem;
 using ilqr::systems::discrete_time::Discretizer;
+using ilqr::constraints::InequalityConstraint;
+using ilqr::constraints::StateBound;
+using ilqr::constraints::ControlBound;
 
 // Define the constants
 constexpr double t0 = 0.0;      // initial time
@@ -46,6 +54,12 @@ Eigen::Matrix<double, N, N> Q;                   // running state gains
 Eigen::Matrix<double, N, N> Qt;                  // terminal state gain
 std::array<Eigen::Vector<double, N>, H> Xr;      // reference states
 std::array<Eigen::Vector<double, M>, H - 1> Ur;  // reference controls
+
+// Define the constraints
+Eigen::Vector<double, N> x_lower;
+Eigen::Vector<double, N> x_upper;
+Eigen::Vector<double, M> u_lower;
+Eigen::Vector<double, M> u_upper;
 
 int main(int argc, char** argv) {
     // Init state
@@ -80,6 +94,14 @@ int main(int argc, char** argv) {
     // Reference controls
     Ur.fill(Eigen::Vector<double, M>::Zero());
 
+    // State bounds
+    x_lower << -10.0, -M_PI, -10.0, -10.0;
+    x_upper << 10.0, M_PI, 10.0, 10.0;
+    
+    // Control bounds
+    u_lower << -2.0;
+    u_upper << 2.0;
+
     // Setup options
     Options options;
     options.max_iter = 100;
@@ -96,12 +118,26 @@ int main(int argc, char** argv) {
     auto discrete_system = std::make_shared<Discretizer<N, M>>(
         continuous_model, integration_iterator, integration_stepper, t0, dt);
 
-    // Create problem
-    Problem<N, M> problem;
-
     // Setup the cost function
     auto cost_function =
         std::make_shared<QuadraticCostFunction<N, M, H>>(Xr, Ur, Qt, Q, R);
+
+    // Setup the constraints
+    // auto state_bound = std::make_shared<StateBound<N, M>>(
+    //     x_lower, x_upper);
+    auto control_bound = std::make_shared<ControlBound<N, M>>(
+        u_lower, u_upper);
+    std::vector<std::shared_ptr<InequalityConstraint<N, M>>> constraints;
+    // constraints.push_back(state_bound);
+    constraints.push_back(control_bound);
+
+    // Setup the cost function with constraints
+    auto cost_function_with_constraints = std::make_shared<CostFunctionWithConstraints<N, M>>(
+        cost_function, constraints);
+    
+    // Create problem
+    Problem<N, M> problem;
+
 
     // Set initial state
     problem.init_state = x0;
@@ -110,7 +146,7 @@ int main(int argc, char** argv) {
     problem.system = discrete_system;
 
     // Set the cost function
-    problem.cost_function = cost_function;
+    problem.cost_function = cost_function_with_constraints;
 
     // Setup solution
     Solution<N, M, H> solution;
