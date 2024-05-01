@@ -1,7 +1,7 @@
 #ifndef ILQR_CONSTRAINTS_INEQUALITY_CONSTRAINT_HPP
 #define ILQR_CONSTRAINTS_INEQUALITY_CONSTRAINT_HPP
 
-#include "ilqr\cost_functions\cost_function_with_finite_diff.hpp"
+#include "ilqr/cost_functions/cost_function_with_finite_diff.hpp"
 
 #include <Eigen/Core>
 
