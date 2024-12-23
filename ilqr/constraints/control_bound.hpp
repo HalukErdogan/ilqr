@@ -45,6 +45,54 @@ class ControlBound : public InequalityConstraint<N, M> {
         return 0.0;
     }
 
+    void CalculateRunningCostStateGradient(
+        const State& state, const Control& control, const Index& index,
+        Eigen::Matrix<double, N, 1>& gradient) const override {
+        gradient.setZero();
+    }
+
+    void CalculateRunningCostControlGradient(
+        const State& state, const Control& control, const Index& index,
+        Eigen::Matrix<double, M, 1>& gradient) const override {
+        gradient.setZero();
+        for (std::size_t i = 0; i < M; ++i) {
+            gradient(i) = alpha_ * (1.0 / (upper_bound_(i) - control(i)) - 1.0 / (control(i) - lower_bound_(i)));
+        }
+    }
+
+    void CalculateRunningCostStateHessian(
+        const State& state, const Control& control, const Index& index,
+        Eigen::Matrix<double, N, N>& hessian) const override {
+        hessian.setZero();
+    }
+
+    void CalculateRunningCostControlHessian(
+        const State& state, const Control& control, const Index& index,
+        Eigen::Matrix<double, M, M>& hessian) const override {
+        hessian.setZero();
+        for (std::size_t i = 0; i < M; ++i) {
+            hessian(i, i) = alpha_ * (1.0 / std::pow(upper_bound_(i) - control(i), 2) + 1.0 / std::pow(control(i) - lower_bound_(i), 2));
+        }
+    }
+
+    void CalculateRunningCostControlStateHessian(
+        const State& state, const Control& control, const Index& index,
+        Eigen::Matrix<double, M, N>& hessian) const override {
+        hessian.setZero();
+    }
+
+    void CalculateTerminalCostStateGradient(
+        const State& state, const Index& index,
+        Eigen::Matrix<double, N, 1>& gradient) const override {
+        gradient.setZero();
+    }
+
+    void CalculateTerminalCostStateHessian(
+        const State& state, const Index& index,
+        Eigen::Matrix<double, N, N>& hessian) const override {
+        hessian.setZero();
+    }
+
    private:
     Control lower_bound_;
     Control upper_bound_;
