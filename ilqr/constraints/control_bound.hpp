@@ -34,8 +34,11 @@ class ControlBound : public InequalityConstraint<N, M> {
         // Logarithmic barrier function.
         double running_cost = 0.0;
         for (std::size_t i = 0; i < M; ++i) {
-            running_cost -= alpha_ * (std::log((upper_bound_(i) - control(i)) / diff_bound_(i)) +
-                                     std::log((control(i) - lower_bound_(i)) / diff_bound_(i)) + std::log(4.0));
+            running_cost -=
+                alpha_ *
+                (std::log((upper_bound_(i) - control(i)) / diff_bound_(i)) +
+                 std::log((control(i) - lower_bound_(i)) / diff_bound_(i)) +
+                 std::log(4.0));
         }
         return running_cost;
     }
@@ -56,7 +59,8 @@ class ControlBound : public InequalityConstraint<N, M> {
         Eigen::Matrix<double, M, 1>& gradient) const override {
         gradient.setZero();
         for (std::size_t i = 0; i < M; ++i) {
-            gradient(i) = alpha_ * (1.0 / (upper_bound_(i) - control(i)) - 1.0 / (control(i) - lower_bound_(i)));
+            gradient(i) = alpha_ * (1.0 / (upper_bound_(i) - control(i)) -
+                                    1.0 / (control(i) - lower_bound_(i)));
         }
     }
 
@@ -71,7 +75,9 @@ class ControlBound : public InequalityConstraint<N, M> {
         Eigen::Matrix<double, M, M>& hessian) const override {
         hessian.setZero();
         for (std::size_t i = 0; i < M; ++i) {
-            hessian(i, i) = alpha_ * (1.0 / std::pow(upper_bound_(i) - control(i), 2) + 1.0 / std::pow(control(i) - lower_bound_(i), 2));
+            hessian(i, i) =
+                alpha_ * (1.0 / std::pow(upper_bound_(i) - control(i), 2) +
+                          1.0 / std::pow(control(i) - lower_bound_(i), 2));
         }
     }
 
