@@ -58,6 +58,8 @@ std::array<Eigen::Vector<double, M>, H - 1> Ur;  // reference controls
 // Define the constraints
 Eigen::Vector<double, M> u_lower;
 Eigen::Vector<double, M> u_upper;
+Eigen::Vector<double, N> x_lower;
+Eigen::Vector<double, N> x_upper;
 
 int main(int argc, char** argv) {
     // Init state
@@ -93,8 +95,10 @@ int main(int argc, char** argv) {
     Ur.fill(Eigen::Vector<double, M>::Zero());
 
     // Control bounds
-    u_lower << -2.0;
-    u_upper << 2.0;
+    u_lower << -5.0;
+    u_upper << 5.0;
+    x_lower << -1.0, -1e10, -1.0, -1e10;
+    x_upper << 1.0, 1e10, 1.0, 1e10;
 
     // Setup options
     Options options;
@@ -118,7 +122,8 @@ int main(int argc, char** argv) {
 
     // Setup the constraints
     std::vector<std::shared_ptr<InequalityConstraint<N, M>>> constraints = {
-        std::make_shared<ControlBound<N, M>>(u_lower, u_upper)};
+        std::make_shared<ControlBound<N, M>>(u_lower, u_upper),
+        std::make_shared<StateBound<N, M>>(x_lower, x_upper)};
 
     // Setup the cost function with constraints
     auto cost_function_with_constraints =
