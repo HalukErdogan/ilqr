@@ -2,14 +2,17 @@
 # -- coding: utf-8 --
 
 import math
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from scipy.interpolate import interp1d
 
 # Constants
 CART_WIDTH = 0.5
 CART_HEIGHT = 0.3
 PENDULUM_LENGTH = 1
+FPS = 30
 
 # Read the output.csv file into a pandas dataframe
 df = pd.read_csv("output.csv")
@@ -22,6 +25,16 @@ v = df["dq1"].values    # cart velocity
 w = df["dq2"].values    # pendulum angular velocity
 u = df["u"].values      # control input
 dt = t[1]-t[0]          # time step
+
+# Downsample the data to match the frame rate
+t_sampled = np.linspace(t[0], t[-1], int(len(t)/FPS))
+
+# Interpolate the data
+x_interp = interp1d(t, x)
+q_interp = interp1d(t, q)
+v_interp = interp1d(t, v)
+w_interp = interp1d(t, w)
+u_interp = interp1d(t, u)
 
 # Create a new figure and set the aspect ratio
 fig, ax = plt.subplots()
@@ -65,21 +78,24 @@ def init():
 
 # Function to update the animation
 def update(i):
+    t_i = t_sampled[i]
+    x_i = x_interp(t_sampled[i])
+    q_i = q_interp(t_sampled[i])
     # Update the position of the cart and the pendulum based on the ith index
-    cart.set_x(x[i] - CART_WIDTH/2)
-    pendulum.set_xdata([x[i], x[i] + PENDULUM_LENGTH * math.sin(q[i])])
-    pendulum.set_ydata([0, - PENDULUM_LENGTH * math.cos(q[i])])
+    cart.set_x(x_i - CART_WIDTH/2)
+    pendulum.set_xdata([x_i, x_i + PENDULUM_LENGTH * math.sin(q_i)])
+    pendulum.set_ydata([0, - PENDULUM_LENGTH * math.cos(q_i)])
 
     # Update the time display
-    time_text.set_text(f'Time: {t[i]:.2f} s')
+    time_text.set_text(f'Time: {t_i:.2f} s')
     
     return cart, pendulum, time_text
 
 # Create the animation
-ani = FuncAnimation(fig, update, frames=len(t+1), init_func=init, blit=True, interval=dt*1000)
+ani = FuncAnimation(fig, update, frames=len(t_sampled), init_func=init, blit=True, interval=1000/FPS)
 
 # Save the animation as a gif
-ani.save('pendulum_on_cart.gif', writer='pillow', fps=1/dt, dpi=100)
+# ani.save('pendulum_on_cart.gif', writer='pillow', fps=10, dpi=100)
 
 # Display the animation
 plt.show()
