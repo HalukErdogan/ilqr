@@ -1,19 +1,32 @@
-# ILQR
+# ILQR - Iterative Linear Quadratic Regulator
 
-The Iterative Linear Quadratic Regulator (ILQR) is a control algorithm designed to optimize nonlinear systems. This project implements the ILQR algorithm for various applications, providing a robust and efficient method for trajectory optimization. 
+**Iterative Linear Quadratic Regulator (iLQR)** is an optimal control algorithm commonly used to solve trajectory optimization problems for nonlinear systems. This repository offers a pure C++ implementation that prioritizes speed, minimal dependencies, and straightforward integration. The corresponding optimal control problem can be formally stated as follows:
 
-There are couple advantages to use this package:
-- Pure C++ implementation
-- Only depends on Eigen (Gtest is optional for testing)
-- Easy dependency control using vcpkg
-- Cross platform (Tested on Ubuntu 22.04, Ubuntu 20.04, Windows 11)
-- High perfomance since there is no dynamic memory allocations (Templated)
-- Provides discritization with different integration steppers
-- Provides numerical differantiation for continuous/discrete system and the cost function
+```math
+\begin{aligned}
+ \min_{\mathbf{x}, \mathbf{u}} \quad & \left[ J(\mathbf{x}, \mathbf{u}) := l_f(x_H) + \sum_{i=0}^{H-1} l(x_i, u_i) \right] \\
+ \\
+\text{subject to} \quad & x_{i+1} = f(x_i, u_i), 
+\\
+& x_0 = x_{init},
+\\
+\text{where} \quad & \mathbf{x} = \{x_0, x_1,\dots, x_H \}, \\
+& \mathbf{u} = \{u_0, u_1, \dots, u_{H-1}\}, \\
+& x_i \in \mathbb{R}^N \quad \forall i \in \{1,2,\dots,H\}, \\
+& u_i \in \mathbb{R}^M \quad \forall i \in \{1,2,\dots,H-1\}.
+\end{aligned}
+```
 
-## Requirements
+Whether you're a researcher prototyping new algorithms or an engineer requiring real-time solutions, this library simplifies the setup and execution of iLQR optimizations.
+- **Pure C++ Implementation:** – Written entirely in C++, eliminating external overhead and language bindings.
+- **Minimal Dependencies:** – Requires only Eigen, with optional GTest for testing.
+- **Easy Dependency Management:** –  Manage and install seamlessly via vcpkg.
+- **Cross-Platform:** – Verified on Ubuntu 22.04, Ubuntu 20.04, and Windows 11.
+- **High Performance:** – Achieves zero dynamic memory allocations through templating.
+- **Flexible Discretization:** – Offers multiple integration steppers for more precise control.
+- **Numerical Differentiation:** – Supports both continuous and discrete systems, as well as cost functions.
 
-Before installing ILQR, ensure you meet the following system requirements:
+## Dependencies
 
 - Git
 - CMake
@@ -57,7 +70,39 @@ Follow these steps to install ILQR:
 
 ## Example
 
-An example that demonstrates how to solve a trajectory optimization problem for a pendulum on a cart is given in the "example" folder. Follow the steps provided below to execute the example:
+### Pendulum on Cart
+To showcase the library's capabilities, the classical problem known as the pendulum on a cart is solved using the library. The optimal control problem is formulated as follows
+
+```math
+\begin{aligned}
+ \min_{\mathbf{x}, \mathbf{u}} \quad & \left[ J(\mathbf{x}, \mathbf{u}) := (x_{target} - x_H)^T Q_f (x_{target} - x_H)  + \sum_{i=0}^{H-1} \left[(x_{target} -x_i)^T  Q  (x_{target} -x_i) + u_i^T R u_i \right] \right] \\
+ \\
+\text{subject to} \quad & \\
+& \dot{x} = f(x, u) = 
+    \begin{bmatrix}
+        \dot{q_1} \\
+        \dot{q_2} \\
+        \dot{q_3} \\
+        \dot{q_4}
+    \end{bmatrix} =
+    \begin{bmatrix} 
+		q_3 \\
+        q_4 \\
+		\frac{u + l \, m_2 \, sin(q_2) \, q_4^2 + m_2 \, g \, sin(q_2) \, cos(q_2) }{m_1 + m_2 \, sin{q_2}^2 } \\
+        - \frac{u \, cos(q_2) + l \, m_2 \, sin(q_2) \, cos(q_2) \, q_4^2 +  (m_1 + m_2) \, g \,sin(q_2)}{l \, (m_1 + m_2 \, sin{q_2}^2 )}
+	\end{bmatrix}, 
+\\
+& x_0 = x_{init}, 
+\\
+\text{where} \quad & \\
+& \mathbf{x} = \{x_0, x_1,\dots, x_H \}, \\
+& \mathbf{u} = \{u_0, u_1, \dots, u_{H-1}\}, \\
+& x_i \in \mathbb{R}^N \quad \forall i \in \{1,2,\dots,H\}, \\
+& u_i \in \mathbb{R}^M \quad \forall i \in \{1,2,\dots,H-1\}, \\
+\end{aligned}
+```
+
+The problem is solved by discretizing the continuous dynamics. Check the 'example/pendulum_on_cart' folder for more details. Follow the steps provided below to execute the example:
 
 1. Run the executable:
 
