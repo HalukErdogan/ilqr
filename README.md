@@ -28,6 +28,12 @@ Whether you're a researcher prototyping new algorithms or an engineer requiring 
 
 ## Dependencies
 
+- Git
+- CMake
+- A build system such as Make or Ninja
+- A C++ compiler like g++ or clang
+- Optional: Matplotlib, Pandas, and Pillow for visualization
+
 ## Installation
 
 Follow these steps to install ILQR:
