@@ -76,7 +76,7 @@ def update(i):
     return cart, pendulum, time_text
 
 # Create the animation
-ani = FuncAnimation(fig, update, frames=len(t), init_func=init, blit=True, interval=dt*1000)
+ani = FuncAnimation(fig, update, frames=len(t+1), init_func=init, blit=True, interval=dt*1000)
 
 # Save the animation as a gif
 ani.save('pendulum_on_cart.gif', writer='pillow', fps=1/dt, dpi=100)

@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 
     // Terminal state gain
     Qt.setZero();
-    Qt.diagonal() << 200.0, 200.0, 200.0, 200.0;
+    Qt.diagonal() << 200.0, 400.0, 200.0, 200.0;
 
     // Scale the running cost gains with dt so the
     // cost calculation wont change according to
@@ -168,6 +168,9 @@ int main(int argc, char** argv) {
         file << t0 + i * dt << "," << x(0) << "," << x(1) << "," << x(2) << ","
              << x(3) << "," << u(0) << std::endl;
     }
+    file << tf << "," << solution.states.back()(0) << ","
+         << solution.states.back()(1) << "," << solution.states.back()(2) << ","
+         << solution.states.back()(3) << "," << solution.controls.back()(0) << std::endl;
     file.close();
 
     return 0;
