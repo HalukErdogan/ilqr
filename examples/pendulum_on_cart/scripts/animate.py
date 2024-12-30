@@ -12,7 +12,7 @@ from scipy.interpolate import interp1d
 CART_WIDTH = 0.5
 CART_HEIGHT = 0.3
 PENDULUM_LENGTH = 1
-FPS = 30
+FPS = 60
 
 # Read the output.csv file into a pandas dataframe
 df = pd.read_csv("output.csv")
@@ -95,7 +95,7 @@ def update(i):
 ani = FuncAnimation(fig, update, frames=len(t_sampled), init_func=init, blit=True, interval=1000/FPS)
 
 # Save the animation as a gif
-# ani.save('pendulum_on_cart.gif', writer='pillow', fps=10, dpi=100)
+ani.save('pendulum_on_cart.gif', writer='pillow', fps=10, dpi=100)
 
 # Display the animation
 plt.show()
