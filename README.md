@@ -4,16 +4,21 @@
 
 ```math
 \begin{aligned}
- \min_{\mathbf{x}, \mathbf{u}} \quad & \left[ J(\mathbf{x}, \mathbf{u}) := l_f(x_H) + \sum_{i=0}^{H-1} l(x_i, u_i) \right] \\
+ \min_{\mathbf{x}, \mathbf{u}} \quad & \bigg[ J(\mathbf{x}, \mathbf{u}) := l_f(x_H) + \sum_{i=0}^{H-1} l(x_i, u_i)  \bigg] \\
  \\
 \text{subject to} \quad & x_{i+1} = f(x_i, u_i), 
 \\
-& x_0 = x_{init},
+& x_0 = x_{init}, \\
+& g_i(\mathbf{x}, \mathbf{u}) \leq 0, \quad \forall i \in \{1,2,\dots,K\}, \\
+& x_{lower} \leq x_i \leq x_{upper}, \quad \forall i \in \{1,2,\dots,H\}, \\
+& u_{lower} \leq u_i \leq u_{upper}, \quad \forall i \in \{1,2,\dots,H-1\}, \\
 \\
 \text{where} \quad & \mathbf{x} = \{x_0, x_1,\dots, x_H \}, \\
 & \mathbf{u} = \{u_0, u_1, \dots, u_{H-1}\}, \\
 & x_i \in \mathbb{R}^N \quad \forall i \in \{1,2,\dots,H\}, \\
-& u_i \in \mathbb{R}^M \quad \forall i \in \{1,2,\dots,H-1\}.
+& u_i \in \mathbb{R}^M \quad \forall i \in \{1,2,\dots,H-1\}, \\
+& x_{init}, x_{lower}, x_{upper} \in \mathbb{R}^N, \\
+& u_{lower}, u_{upper} \in \mathbb{R}^M.
 \end{aligned}
 ```
 
@@ -26,7 +31,9 @@ Whether you're a researcher prototyping new algorithms or an engineer requiring 
 - **Flexible Discretization:** – Offers multiple integration steppers for more precise control.
 - **Numerical Differentiation:** – Supports both continuous and discrete systems, as well as cost functions.
 
-## Dependencies
+## Requirements
+
+Before installing ILQR, ensure you meet the following system requirements:
 
 - Git
 - CMake
@@ -92,13 +99,17 @@ To showcase the library's capabilities, the classical problem known as the pendu
         - \frac{u \, cos(q_2) + l \, m_2 \, sin(q_2) \, cos(q_2) \, q_4^2 +  (m_1 + m_2) \, g \,sin(q_2)}{l \, (m_1 + m_2 \, sin{q_2}^2 )}
 	\end{bmatrix}, 
 \\
-& x_0 = x_{init}, 
+& x_0 = x_{init}, \\
+& x_{lower} \leq x_i \leq x_{upper}, \quad \forall i \in \{1,2,\dots,H\}, \\
+& u_{lower} \leq u_i \leq u_{upper}, \quad \forall i \in \{1,2,\dots,H-1\}, \\
 \\
 \text{where} \quad & \\
 & \mathbf{x} = \{x_0, x_1,\dots, x_H \}, \\
 & \mathbf{u} = \{u_0, u_1, \dots, u_{H-1}\}, \\
 & x_i \in \mathbb{R}^N \quad \forall i \in \{1,2,\dots,H\}, \\
 & u_i \in \mathbb{R}^M \quad \forall i \in \{1,2,\dots,H-1\}, \\
+& x_{init}, x_{lower}, x_{upper} \in \mathbb{R}^N, \\
+& u_{lower}, u_{upper} \in \mathbb{R}^M.
 \end{aligned}
 ```
 
@@ -165,8 +176,9 @@ Note: I wasn't able to recreate same performance results with MSVC. The results 
 - [x] Add line search
 - [x] Add example: pendulum on cart
 - [x] Add scripts to visualize and animate the result of example
-- [ ] Add inequality constrains using control barrier functions
-- [ ] Add adaptive itegration iterator
+- [x] Add inequality constrains using control barrier functions
+- [x] Add box constraints for state and control variables
+- [ ] Add adaptive integration iterator
 
 ## Contact
 
