@@ -27,7 +27,7 @@ u = df["u"].values      # control input
 dt = t[1]-t[0]          # time step
 
 # Downsample the data to match the frame rate
-t_sampled = np.linspace(t[0], t[-1], int(len(t)/FPS))
+t_sampled = np.arange(t[0], t[-1], 1/FPS)
 
 # Interpolate the data
 x_interp = interp1d(t, x)
