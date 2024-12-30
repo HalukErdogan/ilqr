@@ -96,7 +96,7 @@ To showcase the library's capabilities, the classical problem known as the pendu
 \end{aligned}
 ```
 
-Follow the steps provided below to execute the example:
+The problem is solved by discretizing the continuous dynamics. Check the 'example/pendulum_on_cart' folder for more details. Follow the steps provided below to execute the example:
 
 1. Run the executable:
 
