@@ -140,8 +140,8 @@ The performance of the module is tested using the pendulum on cart example provi
 |--------------------------|---------------|---------------|---------------|
 | Euler Integration        | 0.00297155 s  | 0.00924278 s  | 0.0175842 s   |
 | Runge Kutta 2nd Order    | 0.00415075 s  | 0.0180604 s   | 0.0357379 s   |
-| Runge Kutta 3nd Order    | 0.00721841 s  | 0.0264217 s   | 0.0532759 s   |
-| Runge Kutta 4nd Order    | 0.00782524 s  | 0.0363073 s   | 0.0706778 s   |
+| Runge Kutta 3rd Order    | 0.00721841 s  | 0.0264217 s   | 0.0532759 s   |
+| Runge Kutta 4th Order    | 0.00782524 s  | 0.0363073 s   | 0.0706778 s   |
 
 Note: I wasn't able to recreate same performance results with MSVC. The results were up to 5 times slower with MSVC (Tested on same PC).
 
